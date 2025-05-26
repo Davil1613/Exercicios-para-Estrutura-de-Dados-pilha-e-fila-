@@ -1,23 +1,29 @@
 /*
-    ESTRUTURA DE DADOS PILHA
-
-    - Pilha é uma lista linear de acesso restrito, que permite apenas as operações
-      de inserção (push) e retirada (pop), ambas ocorrendo no final da estrutura.
-    - Como consequência, a pilha funciona pelo princípio LIFO (Last In, First Out -
-      último a entrar, primeiro a sair).
-    - A principal aplicação das pilhas são tarefas que envolvem a inversão de uma
-      sequência de dados.
+ Exercício 8: Pilha com Capacidade Máxima
+    Desafio: Modifique a classe Stack para ter um limite máximo de elementos.
+    Regras:
+    1. O tamanho máximo da pilha deve ser definido no construtor.
+    2. Se a pilha atingir o limite, o método push() deve exibir uma mensagem de 
+    erro e impedir a inserção.
+    3. Teste essa funcionalidade simulando uma pilha de desfazer ações em um 
+    editor de texto.
 */
 export default class Stack {
 
     #data       // Vetor privado
+    #maxSize    // Capacidade máxima da pilha
 
-    constructor() {
+    constructor(maxSize) {
         this.#data = []     // Vetor vazio
+        this.#maxSize = maxSize // Define o tamanho máximo
     }
 
     // Método para inserção no vetor
     push(val) {
+        if(this.#data.length >= this.#maxSize) {
+            console.error('Erro: Capacidade máxima da pilha atingida!')
+            return
+        }
         this.#data.push(val)
     }
 
@@ -45,3 +51,23 @@ export default class Stack {
 }
 
 ////////////////////////////////////////////////////////////////
+
+// --- Teste da funcionalidade ---
+// Simulando uma pilha de desfazer ações em um editor de texto
+
+const desfazer = new Stack(3); // Capacidade máxima de 3 ações
+
+console.log('Pilha inicial:', desfazer.print());
+desfazer.push('Ação 1');
+desfazer.push('Ação 2');
+desfazer.push('Ação 3');
+console.log('Pilha após 3 ações:', desfazer.print());
+
+desfazer.push('Ação 4'); // Deve exibir erro
+console.log('Tentativa de adicionar Ação 4:', desfazer.print());
+
+desfazer.pop(); // Desfaz última ação
+console.log('Pilha após desfazer uma ação:', desfazer.print());
+
+desfazer.push('Ação 5'); // Deve funcionar
+console.log('Pilha após adicionar Ação 5:', desfazer.print());
